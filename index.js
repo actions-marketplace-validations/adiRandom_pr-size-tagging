@@ -15,7 +15,7 @@ async function main() {
     });
 
     console.log(activeLabels);
-    const activeLabelNames = activeLabels.data.map(label => label.name);
+    const activeLabelNames = activeLabels.map(label => label.name);
     const labelsToRemove = activeLabelNames.filter(label => sizeLabels.includes(label));
 
     for (const label of labelsToRemove) {
