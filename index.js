@@ -13,6 +13,8 @@ async function main() {
         repo: issue.repo,
         issue_number: issue.number,
     });
+
+    console.log(activeLabels);
     const activeLabelNames = activeLabels.data.map(label => label.name);
     const labelsToRemove = activeLabelNames.filter(label => sizeLabels.includes(label));
 
@@ -30,6 +32,8 @@ async function main() {
         repo: issue.repo,
         pull_number: issue.number,
     });
+
+    console.log(pullRequest.id);
 
     const linesOfCode = pullRequest.additions + pullRequest.deletions;
 
