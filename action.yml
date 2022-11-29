@@ -1,0 +1,13 @@
+name: 'PR Size Tagging'
+description: 'Free github action to apply labels based on PR size'
+inputs:
+  labels: # id of input
+    description: 'An array of {name:string, size:number} objects to describe the labels to apply. Use -1 for infinite size'
+    required: true
+    default: '[{"name": "XS", "size": 0}, {"name": "S", "size": 30}, {"name": "M", "size": 100}, {"name": "L", "size": 300}, {"name": "XL", "size": 1000}, {"name": "XXL", "size": -1}]'
+  token:
+    description: 'The github token'
+    required: true
+runs:
+  using: 'node16'
+  main: 'index.js'
