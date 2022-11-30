@@ -15,7 +15,7 @@ async function main() {
     });
 
     const activeLabelNames = activeLabels.map(label => label.name);
-    const labelsToRemove = activeLabelNames.filter(label => sizeLabels.includes(label));
+    const labelsToRemove = activeLabelNames.filter(label => sizeLabels.find(sizeLabel => sizeLabel.name === label));
 
     for (const label of labelsToRemove) {
         await octokit.rest.issues.removeLabel({
