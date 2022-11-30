@@ -8,14 +8,12 @@ async function main() {
     const token = core.getInput('token');
 
     const octokit = github.getOctokit(token);
-    const res = octokit.rest.issues.listLabelsOnIssue({
+    const {data: activeLabels} = await octokit.rest.issues.listLabelsOnIssue({
         owner: issue.owner,
         repo: issue.repo,
         issue_number: issue.number,
     });
 
-    console.log(res);
-    const activeLabels = res.data
     const activeLabelNames = activeLabels.map(label => label.name);
     const labelsToRemove = activeLabelNames.filter(label => sizeLabels.includes(label));
 
