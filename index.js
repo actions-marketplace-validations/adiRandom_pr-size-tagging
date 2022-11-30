@@ -14,17 +14,6 @@ async function main() {
         issue_number: issue.number,
     });
 
-    const activeLabelNames = activeLabels.map(label => label.name);
-    const labelsToRemove = activeLabelNames.filter(label => sizeLabels.find(sizeLabel => sizeLabel.name === label));
-
-    for (const label of labelsToRemove) {
-        await octokit.rest.issues.removeLabel({
-            owner: issue.owner,
-            repo: issue.repo,
-            issue_number: issue.number,
-            name: label,
-        });
-    }
 
     const {data: pullRequest} = await octokit.rest.pulls.get({
         owner: issue.owner,
@@ -52,12 +41,31 @@ async function main() {
         }
     }
 
-    await octokit.rest.issues.addLabels({
-        owner: issue.owner,
-        repo: issue.repo,
-        issue_number: issue.number,
-        labels: [labelToAdd.name],
-    })
+    const activeLabelNames = activeLabels.map(label => label.name);
+    const labelsToRemove = activeLabelNames.filter(
+        activeLabel => sizeLabels.find(
+            sizeLabel => sizeLabel.name === activeLabel
+                && sizeLabel.name !== labelToAdd.name
+        )
+    );
+
+    for (const label of labelsToRemove) {
+        await octokit.rest.issues.removeLabel({
+            owner: issue.owner,
+            repo: issue.repo,
+            issue_number: issue.number,
+            name: label,
+        });
+    }
+
+    if (!activeLabelNames.includes(labelToAdd.name)) {
+        await octokit.rest.issues.addLabels({
+            owner: issue.owner,
+            repo: issue.repo,
+            issue_number: issue.number,
+            labels: [labelToAdd.name],
+        })
+    }
 }
 
 main().catch(err => core.setFailed(err.message));
