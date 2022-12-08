@@ -28,9 +28,8 @@ async function main() {
     let labelToAdd = null;
     for (const label of sizeLabels) {
         const size = label.size
-        if (size > linesOfCode) {
+        if (size < linesOfCode && size != -1) {
             labelToAdd = label;
-            break;
         }
     }
 
